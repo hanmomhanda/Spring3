@@ -1,5 +1,7 @@
 package io.hanmomhanda.spring3;
 
+import io.hanmomhanda.spring3.ch01.dao.ConnectionMaker;
+import io.hanmomhanda.spring3.ch01.dao.ConnectionMakerImpl;
 import io.hanmomhanda.spring3.ch01.dao.UserDao;
 import io.hanmomhanda.spring3.ch01.domain.User;
 import org.junit.After;
@@ -13,15 +15,19 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Ch0101.class)
-public class Ch0101 {
+@SpringApplicationConfiguration(classes = UserDaoTest.class)
+public class UserDaoTest {
 
+    ConnectionMaker connectionMaker;
 	UserDao userDao;
     String userId;
 
 	@Before
 	public void before() throws Exception {
+        connectionMaker = new ConnectionMakerImpl();
 		userDao = new UserDao();
+        userDao.setConnectionMaker(connectionMaker);
+
         userId = "hanmomhanda";
         userDao.delete(userId);
 	}

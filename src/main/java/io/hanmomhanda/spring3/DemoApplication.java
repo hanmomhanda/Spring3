@@ -1,6 +1,7 @@
 package io.hanmomhanda.spring3;
 
 import io.hanmomhanda.spring3.ch01.dao.ConnectionMakerImpl;
+import io.hanmomhanda.spring3.ch01.dao.DaoFactory;
 import io.hanmomhanda.spring3.ch01.dao.UserDao;
 import io.hanmomhanda.spring3.ch01.domain.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +11,7 @@ public class DemoApplication {
 
 	public static void main(String[] args) throws Exception {
 
-		UserDao userDao = new UserDao();
+		UserDao userDao = DaoFactory.getUserDao();
 		userDao.setConnectionMaker(new ConnectionMakerImpl());
 
 		String userId = "hanmomhanda";

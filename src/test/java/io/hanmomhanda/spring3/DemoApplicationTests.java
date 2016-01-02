@@ -11,6 +11,13 @@ public class DemoApplicationTests {
 
 	@Test
 	public void contextLoads() {
+//		ApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
+//
+//		String[] beanNames = ctx.getBeanDefinitionNames();
+//		Arrays.sort(beanNames);
+//		for (String beanName : beanNames) {
+//			System.out.println(beanName);
+//		}
 	}
 
 }

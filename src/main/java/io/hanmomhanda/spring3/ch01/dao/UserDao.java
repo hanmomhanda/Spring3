@@ -1,16 +1,22 @@
 package io.hanmomhanda.spring3.ch01.dao;
 
 import io.hanmomhanda.spring3.ch01.domain.User;
+import lombok.Setter;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by hanmomhanda on 2016-01-02.
  */
 public class UserDao {
+    @Setter
+    ConnectionMaker connectionMaker;
+
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection c = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test", "sa", "");
+        Connection c = connectionMaker.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values(?,?,?)");
@@ -26,8 +32,8 @@ public class UserDao {
 
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection c = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test", "sa", "");
+        Connection c = connectionMaker.getConnection();
+
         PreparedStatement ps = c
                 .prepareStatement("select * from users where id = ?");
         ps.setString(1, id);
@@ -47,8 +53,8 @@ public class UserDao {
     }
 
     public void delete(String id) throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection c = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test", "sa", "");
+        Connection c = connectionMaker.getConnection();
+
         PreparedStatement ps = c
                 .prepareStatement("DELETE from users where id = ?");
         ps.setString(1, id);

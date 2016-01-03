@@ -17,7 +17,6 @@ public class DaoFactory {
 
         jdbcContext.setDataSource(dataSource);
 
-        userDao.setDataSource(dataSource);
         userDao.setJdbcContext(jdbcContext);
 
         return userDao;

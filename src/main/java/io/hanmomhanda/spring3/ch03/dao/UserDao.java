@@ -6,16 +6,13 @@ import lombok.Setter;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by hanmomhanda on 2016-01-02.
  */
 public class UserDao {
-    @Setter
-    DataSource dataSource;
-
     @Setter
     JdbcContext jdbcContext;
 
@@ -33,31 +30,20 @@ public class UserDao {
     }
 
     public User get(final String id) throws ClassNotFoundException, SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        User user = null;
+        Map<String, Object> rowMap = jdbcContext.queryForObject(new StatementStrategy() {
+            @Override
+            public PreparedStatement prepareStatement(Connection c) throws SQLException {
+                PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
+                ps.setString(1, id);
+                return ps;
+            }
+        });
 
-        try {
-            c = dataSource.getConnection();
+        User user = new User();
+        user.setId((String)rowMap.get("id"));
+        user.setName((String)rowMap.get("name"));
+        user.setPassword((String)rowMap.get("password"));
 
-            ps = c.prepareStatement("select * from users where id = ?");
-            ps.setString(1, id);
-
-            rs = ps.executeQuery();
-
-            rs.next();
-            user = new User();
-            user.setId(rs.getString("id"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (rs != null) { try { rs.close(); } catch (SQLException e) {} }
-            if (ps != null) { try { ps.close(); } catch (SQLException e) {} }
-            if (c != null) { try { c.close(); } catch (SQLException e) {} }
-        }
         return user;
     }
 

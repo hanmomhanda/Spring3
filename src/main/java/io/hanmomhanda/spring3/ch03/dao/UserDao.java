@@ -2,7 +2,6 @@ package io.hanmomhanda.spring3.ch03.dao;
 
 import io.hanmomhanda.spring3.ch03.domain.User;
 import lombok.Setter;
-import org.h2.command.Prepared;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,8 +16,11 @@ public class UserDao {
     @Setter
     DataSource dataSource;
 
+    @Setter
+    JdbcContext jdbcContext;
+
     public void add(final User user) throws ClassNotFoundException, SQLException {
-        jdbcContextWithUpdateStrategy(new StatementStrategy() {
+        jdbcContext.processStatement(new StatementStrategy() {
             @Override
             public PreparedStatement prepareStatement(Connection c) throws SQLException {
                 PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
@@ -60,28 +62,10 @@ public class UserDao {
     }
 
     public void delete(final String id) throws ClassNotFoundException, SQLException {
-        jdbcContextWithUpdateStrategy(c -> {
+        jdbcContext.processStatement(c -> {
             PreparedStatement ps = c.prepareStatement("DELETE from users where id = ?");
             ps.setString(1, id);
             return ps;
         });
-    }
-
-    private void jdbcContextWithUpdateStrategy(StatementStrategy strategy) throws ClassNotFoundException, SQLException {
-        Connection c = null;
-        PreparedStatement ps = null;
-
-        try {
-            c = dataSource.getConnection();
-
-            ps = strategy.prepareStatement(c);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            if (ps != null) { try { ps.close(); } catch (SQLException e) {} }
-            if (c != null) { try { c.close(); } catch (SQLException e) {} }
-        }
     }
 }

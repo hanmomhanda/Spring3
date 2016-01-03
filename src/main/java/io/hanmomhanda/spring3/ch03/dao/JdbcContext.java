@@ -14,7 +14,26 @@ public class JdbcContext {
     @Setter
     DataSource dataSource;
 
-    public void processStatement(StatementStrategy strategy) throws SQLException {
+    public void update(final String query, final String... args) throws SQLException {
+        processStatement(createStatementStrategy(query, args));
+    }
+
+    public Map<String, Object> retrieve(final String query, final String... args) throws SQLException {
+        return queryForObject(createStatementStrategy(query, args));
+    }
+
+    private StatementStrategy createStatementStrategy(final String query, final String... args) throws SQLException {
+        return c -> {
+            PreparedStatement ps = c.prepareStatement(query);
+            int i, len;
+            for (i = 1, len = args.length ; i <= len ;i++) {
+                ps.setString(i, args[i-1]);
+            }
+            return ps;
+        };
+    }
+
+    private void processStatement(StatementStrategy strategy) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
 
@@ -32,7 +51,7 @@ public class JdbcContext {
         }
     }
 
-    public Map<String, Object> queryForObject(StatementStrategy strategy) throws SQLException {
+    private Map<String, Object> queryForObject(StatementStrategy strategy) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

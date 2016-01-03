@@ -3,9 +3,6 @@ package io.hanmomhanda.spring3.ch03.dao;
 import io.hanmomhanda.spring3.ch03.domain.User;
 import lombok.Setter;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -17,27 +14,12 @@ public class UserDao {
     JdbcContext jdbcContext;
 
     public void add(final User user) throws ClassNotFoundException, SQLException {
-        jdbcContext.processStatement(new StatementStrategy() {
-            @Override
-            public PreparedStatement prepareStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-                ps.setString(1, user.getId());
-                ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword());
-                return ps;
-            }
-        });
+        jdbcContext.update("insert into users(id, name, password) values(?,?,?)",
+                user.getId(), user.getName(), user.getPassword());
     }
 
     public User get(final String id) throws ClassNotFoundException, SQLException {
-        Map<String, Object> rowMap = jdbcContext.queryForObject(new StatementStrategy() {
-            @Override
-            public PreparedStatement prepareStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
-                ps.setString(1, id);
-                return ps;
-            }
-        });
+        Map<String, Object> rowMap = jdbcContext.retrieve("select * from users where id = ?", id);
 
         User user = new User();
         user.setId((String)rowMap.get("id"));
@@ -48,10 +30,6 @@ public class UserDao {
     }
 
     public void delete(final String id) throws ClassNotFoundException, SQLException {
-        jdbcContext.processStatement(c -> {
-            PreparedStatement ps = c.prepareStatement("DELETE from users where id = ?");
-            ps.setString(1, id);
-            return ps;
-        });
+        jdbcContext.update("DELETE from users where id = ?", id);
     }
 }

@@ -12,7 +12,6 @@ public class DemoApplication {
 	public static void main(String[] args) throws Exception {
 
 		UserDao userDao = DaoFactory.getUserDao();
-		userDao.setConnectionMaker(new ConnectionMakerImpl());
 
 		String userId = "hanmomhanda";
 		userDao.delete(userId);

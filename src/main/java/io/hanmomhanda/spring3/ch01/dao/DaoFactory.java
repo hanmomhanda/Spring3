@@ -7,6 +7,7 @@ public class DaoFactory {
     private static UserDao userDao = new UserDao();
 
     public static UserDao getUserDao() {
+        userDao.setConnectionMaker(new ConnectionMakerImpl());
         return userDao;
     }
 }

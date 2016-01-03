@@ -1,8 +1,9 @@
-package io.hanmomhanda.spring3.ch01.dao;
+package io.hanmomhanda.spring3.ch03.dao;
 
-import io.hanmomhanda.spring3.ch01.domain.User;
+import io.hanmomhanda.spring3.ch03.domain.User;
 import lombok.Setter;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +14,10 @@ import java.sql.SQLException;
  */
 public class UserDao {
     @Setter
-    ConnectionMaker connectionMaker;
+    DataSource dataSource;
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.getConnection();
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement(
                 "insert into users(id, name, password) values(?,?,?)");
@@ -32,7 +33,7 @@ public class UserDao {
 
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.getConnection();
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c
                 .prepareStatement("select * from users where id = ?");
@@ -53,7 +54,7 @@ public class UserDao {
     }
 
     public void delete(String id) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.getConnection();
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c
                 .prepareStatement("DELETE from users where id = ?");

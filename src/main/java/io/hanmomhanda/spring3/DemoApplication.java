@@ -1,9 +1,9 @@
 package io.hanmomhanda.spring3;
 
-import io.hanmomhanda.spring3.ch01.dao.ConnectionMakerImpl;
-import io.hanmomhanda.spring3.ch01.dao.DaoFactory;
-import io.hanmomhanda.spring3.ch01.dao.UserDao;
-import io.hanmomhanda.spring3.ch01.domain.User;
+import io.hanmomhanda.spring3.ch03.dao.ConnectionMakerImpl;
+import io.hanmomhanda.spring3.ch03.dao.DaoFactory;
+import io.hanmomhanda.spring3.ch03.dao.UserDao;
+import io.hanmomhanda.spring3.ch03.domain.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication

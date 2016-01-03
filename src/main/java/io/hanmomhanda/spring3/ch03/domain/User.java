@@ -1,4 +1,4 @@
-package io.hanmomhanda.spring3.ch01.domain;
+package io.hanmomhanda.spring3.ch03.domain;
 
 import lombok.Data;
 

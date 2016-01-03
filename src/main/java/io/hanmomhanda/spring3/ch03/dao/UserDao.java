@@ -16,10 +16,9 @@ import java.sql.SQLException;
  */
 public class UserDao {
     @Setter
-//    JdbcContext jdbcContext;
     JdbcTemplate jdbcTemplate;
 
-    public void add(final User user) throws ClassNotFoundException, SQLException {
+    public void add(final User user) {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection c) throws SQLException {
@@ -32,7 +31,7 @@ public class UserDao {
         });
     }
 
-    public User get(final String id) throws ClassNotFoundException, SQLException {
+    public User get(final String id) {
         return jdbcTemplate.queryForObject("select * from users where id = ?",
                 new Object[]{id},
                 new RowMapper<User>() {
@@ -48,7 +47,7 @@ public class UserDao {
                 });
     }
 
-    public void delete(final String id) throws ClassNotFoundException, SQLException {
+    public void delete(final String id) {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection c) throws SQLException {

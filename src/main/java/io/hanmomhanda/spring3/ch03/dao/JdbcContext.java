@@ -9,7 +9,9 @@ import java.util.Map;
 
 /**
  * Created by hanmomhanda on 2016-01-03.
+ * @Deprecated use JdbcTemplate instead
  */
+@Deprecated
 public class JdbcContext {
     @Setter
     DataSource dataSource;

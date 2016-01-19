@@ -19,16 +19,8 @@ public class UserDao {
     JdbcTemplate jdbcTemplate;
 
     public void add(final User user) {
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
-                ps.setString(1, user.getId());
-                ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword());
-                return ps;
-            }
-        });
+        jdbcTemplate.update("insert into users(id, name, password) values(?,?,?)",
+                user.getId(), user.getName(), user.getPassword());
     }
 
     public User get(final String id) {
@@ -48,13 +40,6 @@ public class UserDao {
     }
 
     public void delete(final String id) {
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection c) throws SQLException {
-                PreparedStatement ps = c.prepareStatement("DELETE from users where id = ?");
-                ps.setString(1, id);
-                return ps;
-            }
-        });
+        jdbcTemplate.update("DELETE from users where id = ?", id);
     }
 }

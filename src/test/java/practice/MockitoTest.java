@@ -1,6 +1,9 @@
 package practice;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +15,16 @@ import static org.mockito.Mockito.*;
  */
 public class MockitoTest {
 
+    @Mock
+    private List mockedList;
+
+    @Before
+    public void setup() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void verifyTest() {
-        List mockedList = mock(List.class);
-
         mockedList.add("one");
         mockedList.clear();
 

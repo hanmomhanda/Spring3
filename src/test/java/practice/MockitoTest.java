@@ -26,9 +26,12 @@ public class MockitoTest {
     @Test
     public void verifyTest() {
         mockedList.add("one");
+        mockedList.add("two");
+        mockedList.add("three");
         mockedList.clear();
 
-        verify(mockedList).add("one");
+//        verify(mockedList).add("one");
+        verify(mockedList, times(3)).add(any(String.class));
 //        verify(mockedList).addAll(new ArrayList());
         verify(mockedList).clear();
     }
